@@ -41,9 +41,9 @@ dotnet restore
 ```
 
 ```bash
-dotnet run
+dotnet watch run
 ```
 
 ## Postman use
 
-Inside the "practicabackend" folder, you can use the practicaViernes.postman_collection.json" file to test the API functionalities.
+Inside the "practicabackend" folder, you can use the practicaViernes.postman_collection.json" file to test the API functionalities. If your localhost port is another, change it
