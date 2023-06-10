@@ -17,7 +17,7 @@ git clone https://github.com/ChriiisBruh/practicaViernes.git
 
 
 
-Inside the "practicabackend" folder, you will find the file "appsettings.json" you must edit the data according to your database access credentials. data source;initial catalog;user;password
+Inside the "practicabackend" folder, you will find the file "appsettings.json" you must edit the data according to your database access credentials. data source;user;password
 
 ```json
 {
