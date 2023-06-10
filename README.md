@@ -3,7 +3,7 @@
 
 ## DataBase
 
-in the project folder you will find a file called "SCRIPTPRACTICADB", drag it to your Microsoft SQL Server to create the project database
+in the project folder you will find a file called "SCRIPTPRACTICADB", drag it to your Microsoft SQL Server to create the project database and press Execute
 
 ## API Installation
 
