@@ -1,66 +1,76 @@
-﻿using practicabackend.Connection;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using practicabackend.Connection;
 using practicabackend.Models;
 using System.Data;
 using System.Data.SqlClient;
+using System.Xml;
 
 namespace practicabackend.Data
 {
     public class Dusers
     {
         ConnectionDB cn = new ConnectionDB();
-        public async Task<List<Musers>> GetMusers()
+
+        public async Task<string> GetUsersWithReserves()
         {
-            var list = new List<Musers>();
             using (var sql = new SqlConnection(cn.stringSQL()))
             {
-                using (var cmd = new SqlCommand("getUsers", sql))
+                using (var cmd = new SqlCommand("GetUsersWithReservessss", sql))
                 {
                     await sql.OpenAsync();
                     cmd.CommandType = CommandType.StoredProcedure;
                     using (var reader = await cmd.ExecuteReaderAsync())
                     {
-                        while (await reader.ReadAsync())
+                        if (await reader.ReadAsync())
                         {
-                            var musers = new Musers();
-                            musers.id = (int)reader["id"];
-                            musers.name = (string)reader["name"];
-                            musers.faculty = (string)reader["faculty"];
-                            musers.cantReservesLastMonth = (int)reader["cantReservesLastMonth"];
-                            list.Add(musers);
-
+                            var result = reader[0].ToString();
+                            var formattedResult = FormatJson(result);
+                            return formattedResult;
                         }
-
                     }
                 }
             }
-            return list;
-
+            return string.Empty;
         }
 
-        //public async Task<List<Mbooks>> GetMbooks()
-        //{
-        //    var list = new List<Mbooks>();
-        //    using (var sql = new SqlConnection(cn.stringSQL()))
-        //    {
-        //        using (var cmd = new SqlCommand("getBooksById", sql))
-        //        {
-        //            await sql.OpenAsync();
-        //            cmd.CommandType = CommandType.StoredProcedure;
-        //            using (var reader = await cmd.ExecuteReaderAsync())
-        //            {
-        //                while (await reader.ReadAsync())
-        //                {
-        //                    var mbooks = new Mbooks();
-        //                    mbooks.id = (int)reader["id"];
-        //                    list.Add(mbooks);
+        public async Task<string> GetBooksAndReserves()
+        {
+            using (var sql = new SqlConnection(cn.stringSQL()))
+            {
+                using (var cmd = new SqlCommand("GetBooksAndReserves", sql))
+                {
+                    await sql.OpenAsync();
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            var result = reader[0].ToString();
+                            var formattedResult = FormatJson(result);
+                            return formattedResult;
+                        }
+                    }
+                }
+            }
+            return string.Empty;
+        }
 
-        //                }
+        private string FormatJson(string json)
+        {
+            if (string.IsNullOrEmpty(json))
+                return string.Empty;
 
-        //            }
-        //        }
-        //    }
-        //    return list;
+            try
+            {
+                var jToken = JToken.Parse(json);
+                return jToken.ToString(Newtonsoft.Json.Formatting.Indented);
+            }
+            catch (JsonReaderException)
+            {
+                return json;
+            }
+        }
 
-        //}
     }
 }
